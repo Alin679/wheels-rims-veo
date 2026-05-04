@@ -1,0 +1,42 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #f5f2ea;
+  background:
+    radial-gradient(circle at top left, rgba(255, 142, 114, 0.22), transparent 26%),
+    radial-gradient(circle at top right, rgba(88, 121, 255, 0.18), transparent 24%),
+    linear-gradient(180deg, #161616 0%, #1f1f23 58%, #171717 100%);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: rgba(255, 142, 114, 0.55);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
