@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: wheels-rims-veo-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        scope: all
+        value: ${MONGODB_URI}
+      - key: JWT_SECRET
+        scope: all
+        value: ${JWT_SECRET}
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000

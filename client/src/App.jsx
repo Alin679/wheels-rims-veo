@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
+// API URL - use environment variable for production, fallback to /api proxy for local dev
+const getApiUrl = (path) => {
+  const baseUrl = import.meta.env.VITE_API_URL || ''
+  if (baseUrl) return `${baseUrl}${path}`
+  return path // Use proxy in dev
+}
+
 const fallbackCars = [
   {
     id: 1,
@@ -87,18 +94,18 @@ function App() {
   const [selectedCarForView, setSelectedCarForView] = useState(null)
 
   useEffect(() => {
-    fetch('/api/health')
+    fetch(getApiUrl('/api/health'))
       .then(res => res.json())
       .then(data => setStatus(data.message))
       .catch(() => setStatus('Eroare conectare'))
 
-    fetch('/api/cars')
+    fetch(getApiUrl('/api/cars'))
       .then((res) => res.json())
       .then((data) => setCars(data.items || fallbackCars))
       .catch(() => setCars(fallbackCars))
 
     if (token) {
-      fetch('/api/auth/me', {
+      fetch(getApiUrl('/api/auth/me'), {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())
@@ -135,7 +142,7 @@ function App() {
     setAuthMessage('')
 
     try {
-      const response = await fetch(`/api/auth/${mode}`, {
+      const response = await fetch(getApiUrl(`/api/auth/${mode}`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -198,7 +205,7 @@ function App() {
     setAdminMessage('')
 
     try {
-      const response = await fetch(`/api/admin/cars/${editingCarId}`, {
+      const response = await fetch(getApiUrl(`/api/admin/cars/${editingCarId}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +226,7 @@ function App() {
 
       setAdminMessage('Mașina a fost actualizată cu succes.')
       setEditingCarId(null)
-      const carsResponse = await fetch('/api/cars')
+      const carsResponse = await fetch(getApiUrl('/api/cars'))
       const carsData = await carsResponse.json()
       setCars(carsData.items || fallbackCars)
       resetAdminForm()
@@ -235,7 +242,7 @@ function App() {
     if (!confirm('Ești sigur că vrei să ștergi această mașină?')) return
 
     try {
-      const response = await fetch(`/api/admin/cars/${carId}`, {
+      const response = await fetch(getApiUrl(`/api/admin/cars/${carId}`), {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -246,7 +253,7 @@ function App() {
       }
 
       setAdminMessage('Mașina a fost ștearsă.')
-      const carsResponse = await fetch('/api/cars')
+      const carsResponse = await fetch(getApiUrl('/api/cars'))
       const carsData = await carsResponse.json()
       setCars(carsData.items || fallbackCars)
     } catch (error) {
@@ -278,7 +285,7 @@ function App() {
     setAdminMessage('')
 
     try {
-      const response = await fetch('/api/admin/cars', {
+      const response = await fetch(getApiUrl('/api/admin/cars'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -311,7 +318,7 @@ function App() {
         featured: false,
       })
 
-      const carsResponse = await fetch('/api/cars')
+      const carsResponse = await fetch(getApiUrl('/api/cars'))
       const carsData = await carsResponse.json()
       setCars(carsData.items || fallbackCars)
     } catch (error) {
